@@ -9,8 +9,6 @@ WeatherMain::WeatherMain() {
 
 void WeatherMain::init() {
     int input;
-	//Obtain all the RAW Data from the CSV file
-	std::vector<WeatherData> weatherData = CSVReader::readCSV("testData.csv");
 	//Initialize the menu and ask the user for input
     while (true) {
         printMenu();

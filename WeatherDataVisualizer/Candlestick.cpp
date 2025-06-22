@@ -1,11 +1,13 @@
 #include "Candlestick.h"
 
-Candlestick::Candlestick(std::string _country,
+Candlestick::Candlestick(std::string _date,
+	CandlestickType _type,
 	double _open,
 	double _high,
 	double _low,
 	double _close)
-	:country(_country),
+	:date(_date),
+	type(_type),
 	open(_open),
 	high(_high),
 	low(_low),

@@ -30,6 +30,9 @@
     <ClCompile Include="WeatherData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DataToCandlestick.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="weather_data_EU_1980-2019_temp_only.csv">
@@ -50,6 +53,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WeatherData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DataToCandlestick.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include "DataToCandlestick.h"
 
 class WeatherMain
 {
@@ -16,5 +17,9 @@ class WeatherMain
 		int getUserOption();
 		/** Process the user option and call the appropriate function */
 		void processUserOption(int option);
+
+		/** Get all the raw data as WeatherData objects
+		  * Initialize the class in charge of filtering and translating into candlestick data*/
+		DataToCandlestick dataToCandlestick{"testData.csv"};
 };
 

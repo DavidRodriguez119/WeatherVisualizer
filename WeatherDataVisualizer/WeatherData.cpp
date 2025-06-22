@@ -1,9 +1,11 @@
 #include "WeatherData.h"
 
-WeatherData::WeatherData(const std::string& _date,
+WeatherData::WeatherData(const int _year,
+						const int _month,
+						const int _day,
 						const std::string& _time,
 						const std::map<std::string,double>& _temps)
-						:date(_date), time(_time), temperatures(_temps)
+						:year(_year), month(_month), day(_day), time(_time), temperatures(_temps)
 {
 
 };
@@ -15,7 +17,3 @@ double WeatherData::getOneTemperature(const std::string& country) {
 	}
 	return 0; // Return 0 if country not found
 };
-
-
-
-
