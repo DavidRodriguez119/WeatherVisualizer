@@ -91,6 +91,7 @@ std::vector<std::string> CSVReader::tokenize(std::string csvLine, char separator
 WeatherData CSVReader::stringsToWeatherData(std::vector<std::string> strings) {
 	//Create the variables that are going to be used to fill the WeatherData object
     std::string date;
+	int year, month, day;
     std::string time;
     std::map<std::string, double> temps;
     if (strings.size() != (countryCodes.size() + 1) || strings.empty()) {
@@ -102,6 +103,9 @@ WeatherData CSVReader::stringsToWeatherData(std::vector<std::string> strings) {
         //Divide the first string into date and time
 		size_t foundTPos = strings[0].find_first_of('T');
         date = strings[0].substr(0, foundTPos);
+		year = std::stoi(date.substr(0, 4));
+		month = std::stoi(date.substr(5, 2));
+		day = std::stoi(date.substr(8, 2));
 		time = strings[0].substr(foundTPos + 1);
 		time.pop_back(); //Remove the last character 'Z' from the time string
         //Fill the temps map with the country codes and their corresponding temperatures
@@ -114,6 +118,6 @@ WeatherData CSVReader::stringsToWeatherData(std::vector<std::string> strings) {
         throw;
     };
 
-	WeatherData entry{date, time, temps};   
+	WeatherData entry{year, month, day, time, temps};   
     return entry;
 };

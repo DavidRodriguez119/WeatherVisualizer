@@ -125,6 +125,7 @@
   <ItemGroup>
     <ClCompile Include="Candlestick.cpp" />
     <ClCompile Include="CSVReader.cpp" />
+    <ClCompile Include="DataToCandlestick.cpp" />
     <ClCompile Include="WeatherData.cpp" />
     <ClCompile Include="WeatherDataVisualizer.cpp" />
     <ClCompile Include="WeatherMain.cpp" />
@@ -136,6 +137,7 @@
   <ItemGroup>
     <ClInclude Include="Candlestick.h" />
     <ClInclude Include="CSVReader.h" />
+    <ClInclude Include="DataToCandlestick.h" />
     <ClInclude Include="WeatherData.h" />
     <ClInclude Include="WeatherMain.h" />
   </ItemGroup>
