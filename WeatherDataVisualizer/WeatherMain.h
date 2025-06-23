@@ -15,6 +15,15 @@ class WeatherMain
 		void printMenu();
 		/** Obtain the option selected by the user and use appropriatly */
 		int getUserOption();
+
+		//Individual functions for each user option
+		
+		/**Access help*/
+		void printHelp();
+		/**Print a list of all the available countries with abreviations*/
+		void seeAvailableCountries();
+
+
 		/** Process the user option and call the appropriate function */
 		void processUserOption(int option);
 
