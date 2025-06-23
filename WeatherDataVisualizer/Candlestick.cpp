@@ -1,6 +1,6 @@
 #include "Candlestick.h"
 
-Candlestick::Candlestick(std::string _date,
+Candlestick::Candlestick(int _date,
 	CandlestickType _type,
 	double _open,
 	double _high,

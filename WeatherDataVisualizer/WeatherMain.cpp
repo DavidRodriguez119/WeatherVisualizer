@@ -9,12 +9,17 @@ WeatherMain::WeatherMain() {
 
 void WeatherMain::init() {
     int input;
+
+    std::vector<Candlestick> tesdtVector = dataToCandlestick.generateYearlyCandlesticks("AT", 1980, 1982);
+	std::cout << "Candlesticks Generated: " << tesdtVector.size() << std::endl;
+    std::cout << "Candlesticks Generated:" << tesdtVector[0].open << " " << tesdtVector[tesdtVector.size() - 1].open << std::endl;
+
 	//Initialize the menu and ask the user for input
-    while (true) {
-        printMenu();
-        input = getUserOption();
-        processUserOption(input);
-    };
+    //while (true) {
+    //    printMenu();
+    //    input = getUserOption();
+    //    processUserOption(input);
+    //};
 };
 
 void WeatherMain::printMenu() {

@@ -11,14 +11,14 @@ enum class CandlestickType
 class Candlestick
 {
 	public:
-		Candlestick(std::string _date,
+		Candlestick(int _date,
 			CandlestickType _type,
 			double _open,
 			double _high,
 			double _low,
 			double _close);
 
-		std::string date;
+		int date;
 		CandlestickType type; // "bullish" or "bearish"
 		double open; // first temp in the range
 		double high; // highest temp in the range
