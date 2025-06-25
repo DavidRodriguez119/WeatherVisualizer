@@ -16,13 +16,21 @@ class WeatherMain
 		/** Obtain the option selected by the user and use appropriatly */
 		int getUserOption();
 
-		//Individual functions for each user option
+		//////////////Individual functions for each user option//////////////////
 		
 		/**Access help*/
 		void printHelp();
+
 		/**Print a list of all the available countries with abreviations*/
 		void seeAvailableCountries();
 
+		/** Input the user for information to print the yearly candlestick table*/
+		std::vector<Candlestick> getYearlyCandlestickInfo();
+
+		void generateCandlestickTable();
+
+		/**Print candlestick table*/
+		void printCandlestickTable(std::vector<Candlestick>& candlesticks);
 
 		/** Process the user option and call the appropriate function */
 		void processUserOption(int option);

@@ -97,3 +97,20 @@ std::map<std::string, std::string> DataToCandlestick::loadAvailableCountries() {
 	};
 	return countriesMap;
 };
+
+const std::vector <int> DataToCandlestick::getTotalYearsRange() {
+	std::vector<int> yearsRange;
+	int startYear = 9999;
+	int endYear = 0;
+	for(WeatherData& entry : weatherData) {
+		if (entry.getYear() < startYear) {
+			startYear = entry.getYear();
+		};
+		if (entry.getYear() > endYear) {
+			endYear = entry.getYear();
+		};
+	};
+	yearsRange.push_back(startYear);
+	yearsRange.push_back(endYear);
+	return yearsRange;
+};
