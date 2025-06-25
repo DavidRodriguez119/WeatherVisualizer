@@ -124,6 +124,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Candlestick.cpp" />
+    <ClCompile Include="CandlestickChartDrawer.cpp" />
     <ClCompile Include="CSVReader.cpp" />
     <ClCompile Include="DataToCandlestick.cpp" />
     <ClCompile Include="WeatherData.cpp" />
@@ -136,6 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Candlestick.h" />
+    <ClInclude Include="CandlestickChartDrawer.h" />
     <ClInclude Include="CSVReader.h" />
     <ClInclude Include="DataToCandlestick.h" />
     <ClInclude Include="WeatherData.h" />

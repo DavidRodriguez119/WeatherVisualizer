@@ -21,9 +21,20 @@ class DataToCandlestick
 		DataToCandlestick(std::string fileName);
 		std::vector<Candlestick> generateYearlyCandlesticks(const std::string countryCode, const int startYear, const int endYear);
 
+		const std::map<std::string, std::string> getAvailableCountries() {
+			return availableCountries;
+		};
+
+		const std::vector <int> getTotalYearsRange();
+
 	private:
+		std::map<std::string, std::string> availableCountries;
 		std::vector<WeatherData> weatherData;
+
 		/** Generate Candlestick*/
 		CandlestickType assignType(double open, double close);
+
+		/**Load Available Countries*/
+		std::map<std::string, std::string> loadAvailableCountries();
 };
 

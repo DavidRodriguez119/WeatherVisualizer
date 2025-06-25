@@ -6,6 +6,7 @@
 DataToCandlestick::DataToCandlestick(std::string fileName) {
 	//Obtain all the RAW Data from the CSV file
 	weatherData = CSVReader::readCSV(fileName);
+	availableCountries = loadAvailableCountries();
 };
 
 CandlestickType DataToCandlestick::assignType(double open, double close) {
@@ -82,4 +83,34 @@ std::vector<Candlestick> DataToCandlestick::generateYearlyCandlesticks(const std
 	};
 
 	return candlesticks;
+};
+
+std::map<std::string, std::string> DataToCandlestick::loadAvailableCountries() {
+	std::map<std::string, std::string> countriesMap;
+	const std::vector<std::string> countryCodes = { "AT", "BE", "BG", "CH", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GB", "GR", "HR", "HU",
+		"IE", "IT", "LT", "LU", "LV", "NL", "NO", "PL", "PT", "RO", "SE", "SI", "SK" };
+	const std::vector<std::string> countryNames = { "Austria", "Belgium", "Bulgaria", "Switzerland", "Czech Republic", "Germany", "Denmark", 
+		"Estonia", "Spain", "Finland", "France", "United Kingdom", "Greece", "Croatia", "Hungary", "Ireland", "Italy", "Lithuania", "Luxembourg", 
+		"Latvia", "Netherlands", "Norway", "Poland", "Portugal", "Romania", "Sweden", "Slovenia", "Slovakia"};
+	for (int i = 0; i < countryCodes.size(); ++i) {
+		countriesMap[countryCodes[i]] = countryNames[i];
+	};
+	return countriesMap;
+};
+
+const std::vector <int> DataToCandlestick::getTotalYearsRange() {
+	std::vector<int> yearsRange;
+	int startYear = 9999;
+	int endYear = 0;
+	for(WeatherData& entry : weatherData) {
+		if (entry.getYear() < startYear) {
+			startYear = entry.getYear();
+		};
+		if (entry.getYear() > endYear) {
+			endYear = entry.getYear();
+		};
+	};
+	yearsRange.push_back(startYear);
+	yearsRange.push_back(endYear);
+	return yearsRange;
 };
