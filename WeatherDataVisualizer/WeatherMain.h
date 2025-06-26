@@ -27,10 +27,14 @@ class WeatherMain
 		/** Input the user for information to print the yearly candlestick table*/
 		std::vector<Candlestick> getYearlyCandlestickInfo();
 
+		/**Asks the user for input and then calls the function to print the table*/
 		void generateCandlestickTable();
 
 		/**Print candlestick table*/
 		void printCandlestickTable(std::vector<Candlestick>& candlesticks);
+
+		/**Collects information from the user to print a candlestick graph*/
+		void generateCandlestickGraph();
 
 		/** Process the user option and call the appropriate function */
 		void processUserOption(int option);

@@ -2,6 +2,7 @@
 #include "CSVReader.h"
 #include "WeatherData.h"
 #include <iomanip>
+#include "CandlestickChartDrawer.h"
 
 
 //Constructor
@@ -197,6 +198,11 @@ void WeatherMain::printCandlestickTable(std::vector<Candlestick>& candlesticks) 
     std::cout << std::endl;
 };
 
+void WeatherMain::generateCandlestickGraph() {
+    std::vector<Candlestick> candlesticks = getYearlyCandlestickInfo();
+    CandlestickChartDrawer chart { candlesticks };
+};
+
 void WeatherMain::processUserOption(int option) {
     switch (option) {
     case 1:
@@ -209,6 +215,7 @@ void WeatherMain::processUserOption(int option) {
 		generateCandlestickTable();
         break;
 	case 4:
+        generateCandlestickGraph();
 		break;
     default:
         std::cout << "Invalid choice. Please type a number between 1 and 6." << std::endl;
