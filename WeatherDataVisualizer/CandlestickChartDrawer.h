@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <algorithm>
 #include "Candlestick.h"
 
 //Constants for chart dimensions 
@@ -18,7 +19,7 @@ const char CANDLESTICK_BODY_UP = '█';  // Represents the body of an upward can
 class CandlestickChartDrawer
 {
 	public:
-		CandlestickChartDrawer(std::vector<Candlestick>inputCandlesticks);
+		CandlestickChartDrawer(const std::vector<Candlestick>& inputCandlesticks);
 		void drawChart();
 
 	private:
@@ -27,10 +28,10 @@ class CandlestickChartDrawer
 		//Variables necessary for drawing
 		double minTemp;
 		double maxTemp;
-		std::vector<double> stepsTemp;
-		double minTime;
-		double maxTime;
-		std::vector<int> stepSizeTime;
+		double tempRange;
 
 		void calculateMinMaxValues();
+		void drawTitleAndYAxis();
+		void drawCandlestick();
+
 };
