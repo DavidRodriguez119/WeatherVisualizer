@@ -1,10 +1,16 @@
 #include "CandlestickChartDrawer.h"
 #include <cmath>
 
-CandlestickChartDrawer::CandlestickChartDrawer(std::vector<Candlestick>inputCandlesticks) {
-	candlesticks = inputCandlesticks;
+
+CandlestickChartDrawer::CandlestickChartDrawer(const std::vector<Candlestick>& inputCandlesticks)
+	:candlesticks(inputCandlesticks), 
+	minTemp(std::numeric_limits<double>::max()), 	//Initialize method for min and max values suggested by Gemini AI
+	maxTemp(std::numeric_limits<double>::lowest()), //Initialize method for min and max values suggested by Gemini AI
+	tempRange(0.0)
+{
 	calculateMinMaxValues();
-	drawChart();
+	drawTitleAndYAxis();
+	drawCandlestick();
 };
 
 void CandlestickChartDrawer::drawChart() {
@@ -12,41 +18,39 @@ void CandlestickChartDrawer::drawChart() {
 };
 
 void CandlestickChartDrawer::calculateMinMaxValues() {
-	//////////////////////////	THE FOLLOWING CODE IS NOT COMPLETE YET & IT IS NOT WORKING 	//////////////////////////
-	////Calculate the minimum and maximum values of temperature
-	//if (candlesticks.empty())
-	//{
-	//	std::cerr << "No candlesticks available to calculate min/max values. Chart will be empty." << std::endl;
-	//	minTemp = 0;
-	//	maxTemp = 0;
-	//	minTime = 0;
-	//	maxTime = 0;
-	//	return;
-	//};
+	//Calculate the minimum and maximum values of temperature
+	if (candlesticks.empty())
+	{
+		std::cerr << "No candlesticks available to calculate min/max values. Chart will be empty." << std::endl;
+		minTemp = 0;
+		maxTemp = 0;
+		tempRange = 0;
+		return;
+	};
 
-	//for (const Candlestick& candlestick : candlesticks) {
-	//	if (candlestick.low < minTemp) {
-	//		minTemp = candlestick.low;
-	//	};
-	//	if (candlestick.high > maxTemp) {
-	//		maxTemp = candlestick.high;
-	//	};
-	//};
+	for (const Candlestick& candlestick : candlesticks) {
+		if (candlestick.low < minTemp) {
+			minTemp = candlestick.low;
+		};
+		if (candlestick.high > maxTemp) {
+			maxTemp = candlestick.high;
+		};
+	};
 
-	////Add some padding to the min and max values
-	//minTemp += 0.5;
-	//maxTemp += 0.5;
+	tempRange = maxTemp - minTemp;
 
-	////Calculate the step size for the y-axis
-	//int numberOfSteps = std::floor(CHART_HEIGHT/2);
-	//double stepSize = (maxTemp - minTemp) / numberOfSteps;
+	//Add some padding to the min and max values
+	minTemp -= 1;
+	maxTemp += 1;
 
-	//for (int i = 0; i <= numberOfSteps; ++i) {
-	//	stepsTemp.push_back(minTemp + i * (std::round(stepSize * 10) / 10));
-	//	std::cout << "Step " << i << ": " << stepsTemp[i] << std::endl;
-	//	return;
-	//};
+	std::cout << "Min Temp: " << minTemp << ", Max Temp: " << maxTemp << std::endl;
+};
 
-	//Calculate the minimum and maximum values of time
+void CandlestickChartDrawer::drawTitleAndYAxis() {
 
 };
+
+void CandlestickChartDrawer::drawCandlestick() {
+	
+};
+
