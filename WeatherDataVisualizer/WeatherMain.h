@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include "DataToCandlestick.h"
+#include "Prediction.h"
 
 class WeatherMain
 {
@@ -36,11 +37,14 @@ class WeatherMain
 		/**Collects information from the user to print a candlestick graph*/
 		void generateCandlestickGraph();
 
+		/**Prints a candlestick graph*/
+		void generatePrediction();
+
 		/** Process the user option and call the appropriate function */
 		void processUserOption(int option);
 
 		/** Get all the raw data as WeatherData objects
 		  * Initialize the class in charge of filtering and translating into candlestick data*/
-		DataToCandlestick dataToCandlestick{"testData.csv"};
+		DataToCandlestick dataToCandlestick{"weather_data_EU_1980-2019_temp_only.csv"};
 };
 
