@@ -35,9 +35,11 @@ void WeatherMain::printMenu() {
     std::cout << "3. Plot Candlestick Chart " << std::endl;
 	// 4. generate a candlestick graph for a given country and year range
 	std::cout << "4. Generate Candlestick Graph" << std::endl;
+	// 5. predict the temperature trend using a simple moving average (SMA)
+    std::cout << "5. Predict Temperature Trend (SMA)" << std::endl;
     // Get user input
     std::cout << "=======================================" << std::endl;
-    std::cout << "Type in 1-4:" << std::endl;
+    std::cout << "Type in 1-5:" << std::endl;
 };
 
 int WeatherMain::getUserOption() {
@@ -201,7 +203,58 @@ void WeatherMain::printCandlestickTable(std::vector<Candlestick>& candlesticks) 
 void WeatherMain::generateCandlestickGraph() {
     std::vector<Candlestick> candlesticks = getYearlyCandlestickInfo();
     CandlestickChartDrawer chart { candlesticks };
+    chart.drawChart();
 };
+void WeatherMain::generatePrediction() {
+    std::cout << "--- Generate Temperature Prediction ---" << std::endl;
+    std::vector<Candlestick> candlesticks = getYearlyCandlestickInfo();
+    if (candlesticks.size() < 3) { // Need at least 3 data points for a meaningful prediction
+        std::cout << "Not enough data to generate a prediction. Please select a larger year range." << std::endl;
+        return;
+    }
+
+    int period;
+    std::string periodStr;
+    std::cout << "=======================================" << std::endl;
+    std::cout << "Enter the period for the Simple Moving Average (e.g., 3 for 3 years): ";
+    std::getline(std::cin, periodStr);
+    try {
+        period = std::stoi(periodStr);
+        if (period <= 1 || period > candlesticks.size()) {
+            std::cout << "Invalid period. Using default of 3." << std::endl;
+            period = 3;
+        }
+    }
+    catch (const std::exception& e) {
+        std::cout << "Invalid input. Using default period of 3." << std::endl;
+        period = 3;
+    }
+
+    std::vector<double> predictions = Prediction::calculateSMA(candlesticks, period);
+
+    // Display the results in a table
+    std::cout << "\n--- Prediction Results (SMA over " << period << " years) ---" << std::endl;
+    std::cout << std::fixed << std::setprecision(2);
+    std::cout << std::setw(6) << std::left << "Year";
+    std::cout << std::setw(12) << std::right << "Actual Close";
+    std::cout << std::setw(20) << std::right << "Predicted (SMA)";
+    std::cout << std::endl;
+    std::cout << std::string(48, '-') << std::endl;
+
+    for (size_t i = 0; i < candlesticks.size(); ++i) {
+        std::cout << std::setw(6) << std::left << candlesticks[i].date;
+        std::cout << std::setw(12) << std::right << candlesticks[i].close;
+
+        if (predictions[i] == 0.0) {
+            std::cout << std::setw(20) << std::right << "N/A";
+        }
+        else {
+            std::cout << std::setw(20) << std::right << predictions[i];
+        }
+        std::cout << std::endl;
+    }
+    std::cout << std::endl;
+}
 
 void WeatherMain::processUserOption(int option) {
     switch (option) {
@@ -216,6 +269,9 @@ void WeatherMain::processUserOption(int option) {
         break;
 	case 4:
         generateCandlestickGraph();
+		break;
+    case 5:
+        generatePrediction();
 		break;
     default:
         std::cout << "Invalid choice. Please type a number between 1 and 6." << std::endl;
