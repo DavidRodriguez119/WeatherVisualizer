@@ -39,7 +39,7 @@ std::vector<Candlestick> DataToCandlestick::generateYearlyCandlesticks(const std
 	//Get all the years that need to be processed
 	std::vector<int> years;
 	std::map<int, bool> yearMap;
-	for(WeatherData& filteredEntry : filteredData) {
+	for (WeatherData& filteredEntry : filteredData) {
 		yearMap[filteredEntry.getYear()] = true;
 	};
 	for (const auto& yearPair : yearMap) {
@@ -58,13 +58,13 @@ std::vector<Candlestick> DataToCandlestick::generateYearlyCandlesticks(const std
 		currentCandlestick.open = filteredData[index].getOneTemperature(countryCode);
 		while (filteredData[index].getYear() == years[i]) {
 			//Find the highest and lowest temperatures for the year
-			if( filteredData[index].getOneTemperature(countryCode) > currentCandlestick.high) {
+			if (filteredData[index].getOneTemperature(countryCode) > currentCandlestick.high) {
 				currentCandlestick.high = filteredData[index].getOneTemperature(countryCode);
 			};
 			if (filteredData[index].getOneTemperature(countryCode) < currentCandlestick.low) {
 				currentCandlestick.low = filteredData[index].getOneTemperature(countryCode);
 			};
-			if(index >= filteredData.size() - 1 || filteredData.size() == 1) {
+			if (index >= filteredData.size() - 1 || filteredData.size() == 1) {
 				break; //Prevent out of bounds access
 			};
 			index++;
@@ -72,7 +72,7 @@ std::vector<Candlestick> DataToCandlestick::generateYearlyCandlesticks(const std
 		//Add close
 		currentCandlestick.close = filteredData[index - 1].getOneTemperature(countryCode);
 		//Create a candlestick object and add it to the vector
-		Candlestick finishedCandlestick{currentCandlestick.date, 
+		Candlestick finishedCandlestick{ currentCandlestick.date,
 			assignType(currentCandlestick.open, currentCandlestick.close),
 			currentCandlestick.open,
 			currentCandlestick.high,
@@ -89,9 +89,9 @@ std::map<std::string, std::string> DataToCandlestick::loadAvailableCountries() {
 	std::map<std::string, std::string> countriesMap;
 	const std::vector<std::string> countryCodes = { "AT", "BE", "BG", "CH", "CZ", "DE", "DK", "EE", "ES", "FI", "FR", "GB", "GR", "HR", "HU",
 		"IE", "IT", "LT", "LU", "LV", "NL", "NO", "PL", "PT", "RO", "SE", "SI", "SK" };
-	const std::vector<std::string> countryNames = { "Austria", "Belgium", "Bulgaria", "Switzerland", "Czech Republic", "Germany", "Denmark", 
-		"Estonia", "Spain", "Finland", "France", "United Kingdom", "Greece", "Croatia", "Hungary", "Ireland", "Italy", "Lithuania", "Luxembourg", 
-		"Latvia", "Netherlands", "Norway", "Poland", "Portugal", "Romania", "Sweden", "Slovenia", "Slovakia"};
+	const std::vector<std::string> countryNames = { "Austria", "Belgium", "Bulgaria", "Switzerland", "Czech Republic", "Germany", "Denmark",
+		"Estonia", "Spain", "Finland", "France", "United Kingdom", "Greece", "Croatia", "Hungary", "Ireland", "Italy", "Lithuania", "Luxembourg",
+		"Latvia", "Netherlands", "Norway", "Poland", "Portugal", "Romania", "Sweden", "Slovenia", "Slovakia" };
 	for (int i = 0; i < countryCodes.size(); ++i) {
 		countriesMap[countryCodes[i]] = countryNames[i];
 	};
@@ -102,7 +102,7 @@ const std::vector <int> DataToCandlestick::getTotalYearsRange() {
 	std::vector<int> yearsRange;
 	int startYear = 9999;
 	int endYear = 0;
-	for(WeatherData& entry : weatherData) {
+	for (WeatherData& entry : weatherData) {
 		if (entry.getYear() < startYear) {
 			startYear = entry.getYear();
 		};
