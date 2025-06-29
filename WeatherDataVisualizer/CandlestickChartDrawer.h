@@ -3,41 +3,36 @@
 #include <vector>
 #include <string>
 #include <iostream>
-#include <limits> 
-#include <iomanip>  
+#include <limits>
+#include <iomanip>
 #include <algorithm>
 #include "Candlestick.h"
 
-//Constants for chart dimensions 
-//One unit represents one character in the console
-const int CHART_WIDTH = 80; 
-const int CHART_HEIGHT = 30;
-const int CHART_LEFT_MARGIN = 10;
+constexpr int  CHART_WIDTH = 80;
+constexpr int  CHART_HEIGHT = 30;
+constexpr int  CHART_LEFT_MARGIN = 10;
+constexpr int  CANDLE_PADDING = 2;
+constexpr int  CANDLE_WIDTH = 2;
+constexpr int  CANDLES_PER_PAGE = 20;
 
-const int CANDLE_PADDING = 2;  // 1 column left and right
-const int CANDLE_WIDTH = 2;    // Candle spans 2 columns
+constexpr char CANDLESTICK_SHADOW = '|';
+constexpr char CANDLESTICK_BODY_UP = '█';
+constexpr char CANDLESTICK_BODY_DOWN = '#';
 
-//Constants for candlestick representation characters
-const char CANDLESTICK_SHADOW = '|';   // Represents the stalk used to show the highest and lowest values
-const char CANDLESTICK_BODY_UP = '█';  // Represents the body of an upward candlestick
-const char CANDLESTICK_BODY_DOWN = '#'; // Represents the body of a downward candlestick
+constexpr const char* COLOR_RED = "\x1b[31m";
+constexpr const char* COLOR_GREEN = "\x1b[32m";
+constexpr const char* COLOR_RESET = "\x1b[0m";
 
-class CandlestickChartDrawer
-{
-	public:
-		explicit CandlestickChartDrawer(const std::vector<Candlestick>& inputCandlesticks);
-		void drawChart();
+class CandlestickChartDrawer {
+public:
+    explicit CandlestickChartDrawer(const std::vector<Candlestick>& data);
+    void drawChart();
 
-	private:
-		std::vector<Candlestick> candlesticks;
+private:
+    std::vector<Candlestick> candlesticks;
+    double minTemp, maxTemp, tempRange;
 
-		//Variables necessary for drawing
-		double minTemp;
-		double maxTemp;
-		double tempRange;
-
-		void calculateMinMaxValues();
-		void drawTitleAndYAxis();
-		void drawCandlestick();
-
+    void calculateMinMaxValues();
+    void drawTitleAndYAxis(int numCandles);
+    void drawCandlestick(const std::vector<Candlestick>& pageCandles);
 };

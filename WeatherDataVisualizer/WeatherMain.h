@@ -1,50 +1,51 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <vector>
 #include "DataToCandlestick.h"
 #include "Prediction.h"
+#include "Candlestick.h"
 
 class WeatherMain
 {
-	public:
-		WeatherMain();
-		void init();
+public:
+    WeatherMain();
+    void init();
 
-	private:
+private:
 
-		/** Print the menu to the user */
-		void printMenu();
-		/** Obtain the option selected by the user and use appropriatly */
-		int getUserOption();
+    /** Print the menu to the user */
+    void printMenu();
 
-		//////////////Individual functions for each user option//////////////////
-		
-		/**Access help*/
-		void printHelp();
+    /** Process the user option and call the appropriate function */
+    void processUserOption(int option);
 
-		/**Print a list of all the available countries with abreviations*/
-		void seeAvailableCountries();
+    /** Access help */
+    void printHelp();
 
-		/** Input the user for information to print the yearly candlestick table*/
-		std::vector<Candlestick> getYearlyCandlestickInfo();
+    /** Print a list of all the available countries with abbreviations */
+    void seeAvailableCountries();
 
-		/**Asks the user for input and then calls the function to print the table*/
-		void generateCandlestickTable();
+    /** Input the user for information to print the yearly candlestick table */
+    std::vector<Candlestick> getYearlyCandlestickInfo();
 
-		/**Print candlestick table*/
-		void printCandlestickTable(std::vector<Candlestick>& candlesticks);
+    /** Asks the user for input and then calls the function to print the table */
+    void generateCandlestickTable();
 
-		/**Collects information from the user to print a candlestick graph*/
-		void generateCandlestickGraph();
+    /** Print candlestick table */
+    void printCandlestickTable(const std::vector<Candlestick>& candlesticks);
 
-		/**Prints a candlestick graph*/
-		void generatePrediction();
+    /** Collects information from the user to print a candlestick graph */
+    void generateCandlestickGraph();
 
-		/** Process the user option and call the appropriate function */
-		void processUserOption(int option);
+    /** Prints a candlestick graph */
+    void generatePrediction();
 
-		/** Get all the raw data as WeatherData objects
-		  * Initialize the class in charge of filtering and translating into candlestick data*/
-		DataToCandlestick dataToCandlestick{"weather_data_EU_1980-2019_temp_only.csv"};
+    /** Get an integer input from the user with a prompt and range validation */
+    int getIntegerInput(const std::string& prompt, int min, int max);
+
+    /** Get all the raw data as WeatherData objects
+      * Initialize the class in charge of filtering and translating into candlestick data */
+    DataToCandlestick dataToCandlestick{ "weather_data_EU_1980-2019_temp_only.csv" };
 };
 

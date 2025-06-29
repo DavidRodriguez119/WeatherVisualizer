@@ -1,282 +1,221 @@
 #include "WeatherMain.h"
+#include "WeatherMain.h"
 #include "CSVReader.h"
 #include "WeatherData.h"
 #include <iomanip>
+#include <limits>
 #include "CandlestickChartDrawer.h"
-
 
 //Constructor
 WeatherMain::WeatherMain() {
-
-};
+}
 
 void WeatherMain::init() {
-    int input;
-
- //   std::vector<Candlestick> tesdtVector = dataToCandlestick.generateYearlyCandlesticks("AT", 1980, 1982);
-	//std::cout << "Candlesticks Generated: " << tesdtVector.size() << std::endl;
- //   std::cout << "Candlesticks Generated:" << tesdtVector[0].open << " " << tesdtVector[tesdtVector.size() - 1].open << std::endl;
-
-	//Initialize the menu and ask the user for input
     while (true) {
         printMenu();
-        input = getUserOption();
+        int input = getIntegerInput("Please enter your choice (1-6): ", 1, 6);
         processUserOption(input);
-    };
-};
+    }
+}
 
 void WeatherMain::printMenu() {
     std::cout << "=======================================" << std::endl;
-    // 1. print help
     std::cout << "1. Print Help" << std::endl;
-	// 2. print a list of available countries and abreviations
     std::cout << "2. See Available Countries" << std::endl;
-	// 3. print a table with candlestick data for a given country and year range
     std::cout << "3. Plot Candlestick Chart " << std::endl;
-	// 4. generate a candlestick graph for a given country and year range
-	std::cout << "4. Generate Candlestick Graph" << std::endl;
-	// 5. predict the temperature trend using a simple moving average (SMA)
-    std::cout << "5. Predict Temperature Trend (SMA)" << std::endl;
-    // Get user input
+    std::cout << "4. Generate Candlestick Graph" << std::endl;
+    std::cout << "5. Predict Temperature Trend " << std::endl;
+    std::cout << "6. Exit" << std::endl;
     std::cout << "=======================================" << std::endl;
-    std::cout << "Type in 1-5:" << std::endl;
-};
-
-int WeatherMain::getUserOption() {
-    int userOption = 0;
-    std::string line;
-    std::getline(std::cin, line);
-    try {
-        userOption = std::stoi(line);
-    }
-    catch (const std::exception& e) {
-        std::cout << "Invalid input. Please enter a number between 1 and 3." << std::endl;
-    };
-
-    std::cout << "You chose: " << userOption << std::endl;
-    return userOption;
-};
-
-void WeatherMain::printHelp() {
-    std::cout << "Help - you can use this app to visualize (table or graph) weather data for a particular country in Europe." << std::endl;
-};
-
-void WeatherMain::seeAvailableCountries() {
-	std::cout << "Available countries: " << std::endl;
-	std::map<std::string, std::string> countries = dataToCandlestick.getAvailableCountries();
-    for(const auto& country : countries) {
-        std::cout << country.first << " - " << country.second << std::endl;
-	};
-};
-
-std::vector<Candlestick> WeatherMain::getYearlyCandlestickInfo() {
-	std::map<std::string, std::string> availableCountries = dataToCandlestick.getAvailableCountries();
-    //Get the input country
-	std::string inputCountry;
-	bool validCountry = false;
-    
-    while (!validCountry) {
-        std::cout << "=======================================" << std::endl;
-		std::cout << "Please enter a country code (e.g. AT for Austria, FR for France): ";
-        std::getline(std::cin, inputCountry);
-		//Convert to uppercase to match the keys in the map
-        for (auto& character : inputCountry) {
-			character = std::toupper(character);
-        };
-		//Validate the input country
-        if (availableCountries.count(inputCountry)) {
-			validCountry = true;
-			std::cout << "You selected: " << availableCountries[inputCountry] << " (" << inputCountry << ")" << std::endl;
-        }
-        else {
-            std::cout << "Invalid input. Please enter one of the following available countries:" << std::endl;
-            for (const auto& country : availableCountries) {
-                std::cout << country.first << " - " << country.second << std::endl;
-			};
-        }
-    };
-    
-	//Get the input year range
-	int startYear, endYear;
-	bool validStartYear = false;
-	bool validEndYear = false;
-	std::string startYearStr, endYearStr;
-	//Get the smallest and largest year from the data
-	std::vector<int> yearsRange = dataToCandlestick.getTotalYearsRange();
-	//Validate the smallest year and largest year
-    while (!validStartYear) {
-        std::cout << "=======================================" << std::endl;
-        std::cout << "Please enter a start year between and including " << yearsRange[0] << " - " << yearsRange[1] << ":" << std::endl;
-        std::getline(std::cin, startYearStr);
-        try {
-            startYear = std::stoi(startYearStr);
-            if (startYear >= yearsRange[0] && startYear <= yearsRange[1]) {
-                validStartYear = true;
-                std::cout << "Start Year Selected: " << startYear << std::endl;
-            }
-            else {
-                std::cout << "Invalid start year. Please enter a year between" << yearsRange[0] << " and " << yearsRange[1] << std::endl;
-            }
-        }
-        catch (const std::invalid_argument& e) {
-            std::cout << "Invalid input. Please enter a valid year between" << yearsRange[0] << " and " << yearsRange[1] << "." << std::endl;
-        };
-    };
-    if (startYear == yearsRange[1]) {
-        endYear = startYear;
-        validEndYear = true;
-        std::cout << "Processing Candlestick Table for " << endYear << std::endl;
-    };
-    while(!validEndYear){
-        std::cout << "=======================================" << std::endl;
-        std::cout << "Please enter an end year between and including " << startYear << " - " << yearsRange[1] << ":" << std::endl;
-        std::getline(std::cin, endYearStr);
-        try {
-            endYear = std::stoi(endYearStr);
-            if (endYear >= startYear && endYear <= yearsRange[1]) {
-                validEndYear = true;
-            }
-            else {
-                std::cout << "Invalid start year. Please enter a year between " << startYear << " and " << yearsRange[1] << "." << std::endl;
-            }
-        }
-        catch (const std::invalid_argument& e) {
-            std::cout << "Invalid input. Please enter a valid year between ." << startYear << " and " << yearsRange[1] << "." << std::endl;
-        };
-    };
-    if (startYear !=yearsRange[1]) {
-        std::cout << "Processing data for: " << inputCountry << " from " << startYear << " to " << endYear << std::endl;
-    };    
-
-	//Get the candlestick data
-	std::vector<Candlestick> candlesticks = dataToCandlestick.generateYearlyCandlesticks(inputCountry, startYear, endYear);
-
-	return candlesticks;
-};
-
-void WeatherMain::generateCandlestickTable() {
-    std::vector<Candlestick> candlesticks = getYearlyCandlestickInfo();
-    printCandlestickTable(candlesticks);
-};
-
-//The following function was written with the help of Gemini
-void WeatherMain::printCandlestickTable(std::vector<Candlestick>& candlesticks) {
-    if (candlesticks.empty()) {
-        std::cout << "No candlestick data to display for the selected range." << std::endl;
-        return;
-    };
-    std::cout << std::endl;
-    std::cout << std::fixed << std::setprecision(2);
-    std::cout << std::setw(6) << std::left << "Year";
-    std::cout << std::setw(10) << std::right << "Open";
-    std::cout << std::setw(10) << std::right << "High";
-    std::cout << std::setw(10) << std::right << "Low";
-    std::cout << std::setw(10) << std::right << "Close";
-    std::cout << std::setw(10) << std::right << "Type";   
-    std::cout << std::endl;
-
-    std::cout << std::string(56, '-') << std::endl;
-
-    for (const auto& candle : candlesticks) {
-        // Accessing candle.date directly works because it's now an 'int'.
-        std::cout << std::setw(6) << std::left << candle.date;
-        std::cout << std::setw(10) << std::right << candle.open;
-        std::cout << std::setw(10) << std::right << candle.high;
-        std::cout << std::setw(10) << std::right << candle.low;
-        std::cout << std::setw(10) << std::right << candle.close;
-
-        // Convert CandlestickType enum to a displayable string
-        std::string typeStr;
-        if (candle.type == CandlestickType::Bullish) {
-            typeStr = "Bullish";
-        }
-        else { // Based on your logic, if not Bullish, it's Bearish
-            typeStr = "Bearish";
-        }
-        std::cout << std::setw(10) << std::right << typeStr;
-
-        std::cout << std::endl; // Move to the next line after each row
-    }
-    std::cout << std::endl;
-};
-
-void WeatherMain::generateCandlestickGraph() {
-    std::vector<Candlestick> candlesticks = getYearlyCandlestickInfo();
-    CandlestickChartDrawer chart { candlesticks };
-    chart.drawChart();
-};
-void WeatherMain::generatePrediction() {
-    std::cout << "--- Generate Temperature Prediction ---" << std::endl;
-    std::vector<Candlestick> candlesticks = getYearlyCandlestickInfo();
-    if (candlesticks.size() < 3) { // Need at least 3 data points for a meaningful prediction
-        std::cout << "Not enough data to generate a prediction. Please select a larger year range." << std::endl;
-        return;
-    }
-
-    int period;
-    std::string periodStr;
-    std::cout << "=======================================" << std::endl;
-    std::cout << "Enter the period for the Simple Moving Average (e.g., 3 for 3 years): ";
-    std::getline(std::cin, periodStr);
-    try {
-        period = std::stoi(periodStr);
-        if (period <= 1 || period > candlesticks.size()) {
-            std::cout << "Invalid period. Using default of 3." << std::endl;
-            period = 3;
-        }
-    }
-    catch (const std::exception& e) {
-        std::cout << "Invalid input. Using default period of 3." << std::endl;
-        period = 3;
-    }
-
-    std::vector<double> predictions = Prediction::calculateSMA(candlesticks, period);
-
-    // Display the results in a table
-    std::cout << "\n--- Prediction Results (SMA over " << period << " years) ---" << std::endl;
-    std::cout << std::fixed << std::setprecision(2);
-    std::cout << std::setw(6) << std::left << "Year";
-    std::cout << std::setw(12) << std::right << "Actual Close";
-    std::cout << std::setw(20) << std::right << "Predicted (SMA)";
-    std::cout << std::endl;
-    std::cout << std::string(48, '-') << std::endl;
-
-    for (size_t i = 0; i < candlesticks.size(); ++i) {
-        std::cout << std::setw(6) << std::left << candlesticks[i].date;
-        std::cout << std::setw(12) << std::right << candlesticks[i].close;
-
-        if (predictions[i] == 0.0) {
-            std::cout << std::setw(20) << std::right << "N/A";
-        }
-        else {
-            std::cout << std::setw(20) << std::right << predictions[i];
-        }
-        std::cout << std::endl;
-    }
-    std::cout << std::endl;
 }
 
 void WeatherMain::processUserOption(int option) {
     switch (option) {
     case 1:
-		printHelp();
+        printHelp();
         break;
     case 2:
-		seeAvailableCountries();
+        seeAvailableCountries();
         break;
     case 3:
-		generateCandlestickTable();
+        generateCandlestickTable();
         break;
-	case 4:
+    case 4:
         generateCandlestickGraph();
-		break;
+        break;
     case 5:
         generatePrediction();
-		break;
+        break;
+    case 6:
+        std::cout << "Exiting application. Goodbye!" << std::endl;
+        exit(0);
     default:
         std::cout << "Invalid choice. Please type a number between 1 and 6." << std::endl;
         break;
     }
-};
+}
 
+void WeatherMain::printHelp() {
+    std::cout << "Help - you can use this app to visualize (table or graph) weather data for a particular country in Europe." << std::endl;
+}
 
+void WeatherMain::seeAvailableCountries() {
+    std::cout << "Available countries: " << std::endl;
+    std::map<std::string, std::string> countries = dataToCandlestick.getAvailableCountries();
+    for (const auto& country : countries) {
+        std::cout << country.first << " - " << country.second << std::endl;
+    }
+}
+
+std::vector<Candlestick> WeatherMain::getYearlyCandlestickInfo() {
+    std::map<std::string, std::string> availableCountries = dataToCandlestick.getAvailableCountries();
+    std::string inputCountry;
+    while (true) {
+        std::cout << "=======================================" << std::endl;
+        std::cout << "Please enter a country code (e.g. AT for Austria, FR for France): ";
+        std::getline(std::cin, inputCountry);
+        if (inputCountry.empty()) continue;
+        for (auto& c : inputCountry) c = std::toupper(c);
+        if (availableCountries.count(inputCountry)) {
+            std::cout << "You selected: " << availableCountries[inputCountry]
+                << " (" << inputCountry << ")" << std::endl;
+            break;
+        }
+        std::cout << "Invalid input. Please enter one of the following available countries:" << std::endl;
+        for (const auto& country : availableCountries) {
+            std::cout << country.first << " - " << country.second << std::endl;
+        }
+    }
+
+    std::vector<int> yearsRange = dataToCandlestick.getTotalYearsRange();
+    std::string startPrompt = "Please enter a start year between and including "
+        + std::to_string(yearsRange[0]) + " - " + std::to_string(yearsRange[1]) + ": ";
+    int startYear = getIntegerInput(startPrompt, yearsRange[0], yearsRange[1]);
+
+    int endYear;
+    if (startYear == yearsRange[1]) {
+        endYear = startYear;
+    }
+    else {
+        std::string endPrompt = "Please enter an end year between and including "
+            + std::to_string(startYear) + " - " + std::to_string(yearsRange[1]) + ": ";
+        endYear = getIntegerInput(endPrompt, startYear, yearsRange[1]);
+    }
+
+    std::cout << "Processing data for: " << inputCountry
+        << " from " << startYear << " to " << endYear << std::endl;
+
+    return dataToCandlestick.generateYearlyCandlesticks(inputCountry, startYear, endYear);
+}
+
+void WeatherMain::generateCandlestickTable() {
+    std::vector<Candlestick> candlesticks = getYearlyCandlestickInfo();
+    printCandlestickTable(candlesticks);
+}
+
+void WeatherMain::printCandlestickTable(const std::vector<Candlestick>& candlesticks) {
+    if (candlesticks.empty()) {
+        std::cout << "No candlestick data to display for the selected range." << std::endl;
+        return;
+    }
+    std::cout << std::endl;
+    std::cout << std::fixed << std::setprecision(2);
+    std::cout << std::setw(6) << std::left << "Year"
+        << std::setw(10) << std::right << "Open"
+        << std::setw(10) << std::right << "High"
+        << std::setw(10) << std::right << "Low"
+        << std::setw(10) << std::right << "Close"
+        << std::setw(10) << std::right << "Type"
+        << std::endl;
+    std::cout << std::string(56, '-') << std::endl;
+
+    for (const auto& candle : candlesticks) {
+        std::cout << std::setw(6) << std::left << candle.date
+            << std::setw(10) << std::right << candle.open
+            << std::setw(10) << std::right << candle.high
+            << std::setw(10) << std::right << candle.low
+            << std::setw(10) << std::right << candle.close;
+        std::string typeStr = (candle.type == CandlestickType::Bullish) ? "Bullish" : "Bearish";
+        std::cout << std::setw(10) << std::right << typeStr
+            << std::endl;
+    }
+    std::cout << std::endl;
+}
+
+void WeatherMain::generateCandlestickGraph() {
+    std::vector<Candlestick> candlesticks = getYearlyCandlestickInfo();
+    if (candlesticks.empty()) return;
+    CandlestickChartDrawer chart{ candlesticks };
+    chart.drawChart();
+}
+
+void WeatherMain::generatePrediction() {
+    std::cout << "\n--- Generate Temperature Prediction ---" << std::endl;
+    std::vector<Candlestick> candlesticks = getYearlyCandlestickInfo();
+    if (candlesticks.size() < 3) {
+        std::cout << "Not enough data for prediction. Please select at least 3 years of data." << std::endl;
+        return;
+    }
+    std::cout << "\nSelect a prediction model:" << std::endl;
+    std::cout << "1. Simple Moving Average (SMA) - Gives equal weight to all past periods." << std::endl;
+    std::cout << "2. Exponential Moving Average (EMA) - Gives more weight to recent periods." << std::endl;
+    int modelChoice = getIntegerInput("Enter your choice (1-2): ", 1, 2);
+
+    int maxPeriod = static_cast<int>(candlesticks.size());
+    std::string periodPrompt = "Enter the period (number of years) for the average (2-"
+        + std::to_string(maxPeriod) + "): ";
+    int period = getIntegerInput(periodPrompt, 2, maxPeriod);
+
+    std::vector<double> predictions;
+    std::string modelName;
+    if (modelChoice == 1) {
+        modelName = "SMA";
+        predictions = Prediction::calculateSMA(candlesticks, period);
+    }
+    else {
+        modelName = "EMA";
+        predictions = Prediction::calculateEMA(candlesticks, period);
+    }
+
+    std::cout << "\n--- Prediction Results (" << modelName << " over " << period << " years) ---" << std::endl;
+    std::cout << std::fixed << std::setprecision(3);
+    std::cout << std::setw(6) << std::left << "Year"
+        << std::setw(15) << std::right << "Actual Close"
+        << std::setw(20) << std::right << "Predicted (" << modelName << ")"
+        << std::endl;
+    std::cout << std::string(41, '-') << std::endl;
+
+    for (size_t i = 0; i < candlesticks.size(); ++i) {
+        std::cout << std::setw(6) << std::left << candlesticks[i].date
+            << std::setw(15) << std::right << candlesticks[i].close;
+        if (i < predictions.size() && predictions[i] != 0.0) {
+            std::cout << std::setw(20) << std::right << predictions[i];
+        }
+        else {
+            std::cout << std::setw(20) << std::right << "N/A";
+        }
+        std::cout << std::endl;
+    }
+}
+
+int WeatherMain::getIntegerInput(const std::string& prompt, int min, int max) {
+    int value;
+    std::string line;
+    while (true) {
+        std::cout << prompt;
+        std::getline(std::cin, line);
+        if (line.empty()) continue;
+        try {
+            value = std::stoi(line);
+            if (value >= min && value <= max) return value;
+            std::cout << "Invalid range. Please enter a number between "
+                << min << " and " << max << "." << std::endl;
+        }
+        catch (const std::invalid_argument&) {
+            std::cout << "Invalid input. Please enter a whole number." << std::endl;
+        }
+        catch (const std::out_of_range&) {
+            std::cout << "Input is out of range. Please enter a smaller number." << std::endl;
+        }
+    }
+}

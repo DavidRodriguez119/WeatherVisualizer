@@ -25,3 +25,35 @@ std::vector<double> Prediction::calculateSMA(const std::vector<Candlestick>& can
 
     return smaValues;
 }
+
+std::vector<double> Prediction::calculateEMA(const std::vector<Candlestick>& candlesticks, int period)
+{
+    std::vector<double> emaValues;
+    if (period <= 0 || candlesticks.size() < period) {
+        return emaValues; // Not enough data
+    }
+
+    // The multiplier for weighting the EMA
+    double multiplier = 2.0 / (period + 1);
+
+    // Start with the SMA of the first period as the initial EMA
+    double initialSma = 0.0;
+    for (int i = 0; i < period; ++i) {
+        initialSma += candlesticks[i].close;
+    }
+    initialSma /= period;
+
+    // Pad the beginning of the vector
+    for (int i = 0; i < period - 1; ++i) {
+        emaValues.push_back(0.0);
+    }
+    emaValues.push_back(initialSma);
+
+    // Calculate EMA for the rest of the data
+    for (size_t i = period; i < candlesticks.size(); ++i) {
+        double ema = (candlesticks[i].close - emaValues.back()) * multiplier + emaValues.back();
+        emaValues.push_back(ema);
+    }
+
+    return emaValues;
+}
