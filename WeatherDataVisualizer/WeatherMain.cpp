@@ -22,7 +22,7 @@ void WeatherMain::printMenu() {
     std::cout << "=======================================" << std::endl;
     std::cout << "1. Print Help" << std::endl;
     std::cout << "2. See Available Countries" << std::endl;
-    std::cout << "3. Plot Candlestick Chart " << std::endl;
+    std::cout << "3. Plot Candlestick Table " << std::endl;
     std::cout << "4. Generate Candlestick Graph" << std::endl;
     std::cout << "5. Predict Temperature Trend " << std::endl;
     std::cout << "6. Exit" << std::endl;
@@ -144,7 +144,9 @@ void WeatherMain::printCandlestickTable(const std::vector<Candlestick>& candlest
 
 void WeatherMain::generateCandlestickGraph() {
     std::vector<Candlestick> candlesticks = getYearlyCandlestickInfo();
-    if (candlesticks.empty()) return;
+    if (candlesticks.empty()) {
+        return;
+    };
     CandlestickChartDrawer chart{ candlesticks };
     chart.drawChart();
 }
@@ -159,6 +161,7 @@ void WeatherMain::generatePrediction() {
     std::cout << "\nSelect a prediction model:" << std::endl;
     std::cout << "1. Simple Moving Average (SMA) - Gives equal weight to all past periods." << std::endl;
     std::cout << "2. Exponential Moving Average (EMA) - Gives more weight to recent periods." << std::endl;
+
     int modelChoice = getIntegerInput("Enter your choice (1-2): ", 1, 2);
 
     int maxPeriod = static_cast<int>(candlesticks.size());

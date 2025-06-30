@@ -38,7 +38,7 @@ private:
     /** Collects information from the user to print a candlestick graph */
     void generateCandlestickGraph();
 
-    /** Prints a candlestick graph */
+    /** Generates a yearly temperature prediction based on the three previous years of data */
     void generatePrediction();
 
     /** Get an integer input from the user with a prompt and range validation */

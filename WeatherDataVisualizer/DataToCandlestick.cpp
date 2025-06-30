@@ -14,10 +14,10 @@ CandlestickType DataToCandlestick::assignType(double open, double close) {
 	//Determine the type of candlestick based on open and close values
 	if (open <= close)
 	{
-		type = CandlestickType::Bearish;
+		type = CandlestickType::Bullish;
 	}
 	else {
-		type = CandlestickType::Bullish;
+		type = CandlestickType::Bearish;
 	};
 	return type;
 };
